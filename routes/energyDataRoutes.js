@@ -18,7 +18,7 @@ router.put('/:id', authMiddleware, energyDataController.updateEnergyData);
 // Delete energy data by ID
 router.delete('/:id', authMiddleware, energyDataController.deleteEnergyData);
 
-// Get Negative Energy Consumption
-router.get('/negative-consumption', authMiddleware, energyDataController.calculateNegativeConsumptionAndRewards);
+// Post Negative Energy Consumption
+router.post('/negative-consumption', authMiddleware, energyDataController.calculateNegativeConsumptionAndRewards);
 
 module.exports = router;
