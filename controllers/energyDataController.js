@@ -129,54 +129,55 @@ const deleteEnergyData = async (req, res) => {
 // Calculate the Negative Energy
 const calculateNegativeConsumptionAndRewards = async (req, res) => {
   try {
-    const { consumerId, year, month } = req.query;
+    const { consumerId, year, month } = req.body;
+    // console.log("Extracted year:", year);
+    // console.log("Extracted month:", month);
+    // console.log("Extracted consumerId:", consumerId);
 
-    // Calculate the start and end dates for the current month
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0);
+    const getMonthStartEnd = (year, month) => {
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 0);
+      return { startDate, endDate };
+    };
 
-    // Calculate the start and end dates for the previous month
-    const prevStartDate = new Date(year, month - 2, 1);
-    const prevEndDate = new Date(year, month - 1, 0);
+    const { startDate, endDate } = getMonthStartEnd(year, month);
+    // console.log("Extracted startDate:", startDate);
+    // console.log("Extracted endDate:", endDate);
+
+    const { startDate: prevStartDate, endDate: prevEndDate } = getMonthStartEnd(
+      year,
+      month - 1
+    );
+    // console.log("Extracted prevStartDate:", prevStartDate);
+    // console.log("Extracted prevEndDate:", prevEndDate);
 
     // Retrieve the energy consumption data for the current month
-    const currentMonthData = await EnergyData.aggregate([
-      {
-        $match: {
-          consumer: new mongoose.Types.ObjectId(consumerId),
-          timestamp: { $gte: startDate, $lte: endDate },
-          consumptionType: "peak",
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalConsumption: { $sum: "$quantity" },
-        },
-      },
-    ]);
+    // console.log("Consumer ID:", consumerId);
+    // console.log("Start Date:", startDate);
+    // console.log("End Date:", endDate);
+    // console.log("Consumption Type:", "peak");
+    const currentMonthData = await EnergyData.find({
+      consumer: consumerId,
+      timestamp: { $gte: startDate, $lte: endDate },
+      consumptionType: "peak",
+    }).exec();
+    // console.log("Extracted currentMonthData:", currentMonthData);
 
     // Retrieve the energy consumption data for the previous month
-    const previousMonthData = await EnergyData.aggregate([
-      {
-        $match: {
-          consumer: new mongoose.Types.ObjectId(consumerId),
-          timestamp: { $gte: prevStartDate, $lte: prevEndDate },
-          consumptionType: "peak",
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalConsumption: { $sum: "$quantity" },
-        },
-      },
-    ]);
+    const previousMonthData = await EnergyData.find({
+      consumer: consumerId,
+      timestamp: { $gte: prevStartDate, $lte: prevEndDate },
+      consumptionType: "peak",
+    }).exec();
+    // console.log("Extracted previousMonthData:", previousMonthData);
 
-    const currentMonthConsumption =
-      currentMonthData.length > 0 ? currentMonthData[0].totalConsumption : 0;
+    const calculateTotalConsumption = (data) => {
+      return data.reduce((total, entry) => total + entry.quantity, 0);
+    };
+
+    const currentMonthConsumption = calculateTotalConsumption(currentMonthData);
     const previousMonthConsumption =
-      previousMonthData.length > 0 ? previousMonthData[0].totalConsumption : 0;
+      calculateTotalConsumption(previousMonthData);
 
     const negativeConsumption =
       previousMonthConsumption - currentMonthConsumption;
@@ -184,12 +185,10 @@ const calculateNegativeConsumptionAndRewards = async (req, res) => {
 
     res.json({ negativeConsumption, rewards });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error:
-          "An error occurred while calculating negative consumption and rewards",
-      });
+    res.status(500).json({
+      error:
+        "An error occurred while calculating negative consumption and rewards",
+    });
   }
 };
 
