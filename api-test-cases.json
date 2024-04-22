@@ -1,233 +1,245 @@
 {
-    "info": {
-      "_postman_id": "your-collection-id",
-      "name": "Energy Network API",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  "info": {
+    "_postman_id": "your-collection-id",
+    "name": "Energy Network API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/users",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password\",\n  \"role\": \"consumer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/users/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password\"\n}"
+            }
+          }
+        }
+      ]
     },
-    "item": [
-      {
-        "name": "User",
-        "item": [
-          {
-            "name": "Register User",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/users",
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password\",\n  \"role\": \"consumer\"\n}"
+    {
+      "name": "Energy Producer",
+      "item": [
+        {
+          "name": "Create Energy Producer",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/energyproducers",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
-            }
-          },
-          {
-            "name": "Login User",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/users/login",
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password\"\n}"
-              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Producer\",\n  \"capacityRange\": {\n    \"min\": 100,\n    \"max\": 500\n  },\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [10.123456, 20.654321]\n  }\n}"
             }
           }
-        ]
-      },
-      {
-        "name": "Energy Producer",
-        "item": [
-          {
-            "name": "Create Energy Producer",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/energyproducers",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"name\": \"Test Producer\",\n  \"capacityRange\": {\n    \"min\": 100,\n    \"max\": 500\n  },\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [10.123456, 20.654321]\n  }\n}"
+        },
+        {
+          "name": "Get All Energy Producers",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/energyproducers",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
-            }
-          },
-          {
-            "name": "Get All Energy Producers",
-            "request": {
-              "method": "GET",
-              "url": "http://localhost:3000/api/energyproducers",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Energy Consumer",
+      "item": [
+        {
+          "name": "Create Energy Consumer",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/energyconsumers",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Consumer\",\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [30.123456, 40.654321]\n  },\n  \"consumptionPattern\": \"High\"\n}"
             }
           }
-        ]
-      },
-      {
-        "name": "Energy Consumer",
-        "item": [
-          {
-            "name": "Create Energy Consumer",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/energyconsumers",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"name\": \"Test Consumer\",\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [30.123456, 40.654321]\n  },\n  \"consumptionPattern\": \"High\"\n}"
+        },
+        {
+          "name": "Get All Energy Consumers",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/energyconsumers",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
-            }
-          },
-          {
-            "name": "Get All Energy Consumers",
-            "request": {
-              "method": "GET",
-              "url": "http://localhost:3000/api/energyconsumers",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Energy Data",
+      "item": [
+        {
+          "name": "Create Energy Data",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/energydata",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"producer\": \"{{producerId}}\",\n  \"consumer\": \"{{consumerId}}\",\n  \"timestamp\": \"{{timestamp}}\",\n  \"quantity\": 150,\n  \"type\": \"Consumption\"\n}"
             }
           }
-        ]
-      },
-      {
-        "name": "Energy Request",
-        "item": [
-          {
-            "name": "Create Energy Request",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/energyrequests",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"consumer\": \"{{consumerId}}\",\n  \"producer\": \"{{producerId}}\",\n  \"quantity\": 150\n}"
+        },
+        {
+          "name": "Get All Energy Data",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/energydata",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
-            }
-          },
-          {
-            "name": "Approve Energy Request",
-            "request": {
-              "method": "PUT",
-              "url": "http://localhost:3000/api/energyrequests/{{energyRequestId}}",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"status\": \"approved\"\n}"
+            ]
+          }
+        },
+        {
+          "name": "Get Energy Data by ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:3000/api/energydata/{{energyDataId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
+            ]
+          }
+        },
+        {
+          "name": "Update Energy Data",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:3000/api/energydata/{{energyDataId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 200,\n  \"type\": \"Consumption\"\n}"
             }
           }
-        ]
-      },
-      {
-        "name": "Transaction",
-        "item": [
-          {
-            "name": "Create Transaction",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/transactions",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"consumer\": \"{{consumerId}}\",\n  \"producer\": \"{{producerId}}\",\n  \"energyRequest\": \"{{energyRequestId}}\",\n  \"quantity\": 150,\n  \"price\": 15\n}"
+        },
+        {
+          "name": "Delete Energy Data",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:3000/api/energydata/{{energyDataId}}",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
+            ]
+          }
+        },
+        {
+          "name": "Calculate Negative Consumption and Rewards",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/energydata/negative-consumption",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"consumerId\": \"{{consumerId}}\",\n  \"year\": 2023,\n  \"month\": 6\n}"
             }
           }
-        ]
-      },
-      {
-        "name": "Reward",
-        "item": [
-          {
-            "name": "Create Reward",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/rewards",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"consumer\": \"{{consumerId}}\",\n  \"amount\": 10,\n  \"reason\": \"Energy conservation\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Reward",
+      "item": [
+        {
+          "name": "Create Reward",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/rewards",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"consumer\": \"{{consumerId}}\",\n  \"amount\": 10,\n  \"reason\": \"Energy conservation\"\n}"
             }
           }
-        ]
-      },
-      {
-        "name": "Pricing Structure",
-        "item": [
-          {
-            "name": "Create Pricing Structure",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/pricingstructures",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"name\": \"Test Pricing Structure\",\n  \"description\": \"Test description\",\n  \"tiers\": [\n    {\n      \"name\": \"Tier 1\",\n      \"unitPrice\": 0.1,\n      \"maxQuantity\": 100\n    },\n    {\n      \"name\": \"Tier 2\",\n      \"unitPrice\": 0.2,\n      \"maxQuantity\": 200\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Pricing Structure",
+      "item": [
+        {
+          "name": "Create Pricing Structure",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:3000/api/pricingstructures",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}"
               }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Pricing Structure\",\n  \"description\": \"Test description\",\n  \"tiers\": [\n    {\n      \"name\": \"Tier 1\",\n      \"unitPrice\": 0.1,\n      \"maxQuantity\": 100\n    },\n    {\n      \"name\": \"Tier 2\",\n      \"unitPrice\": 0.2,\n      \"maxQuantity\": 200\n    }\n  ]\n}"
             }
           }
-        ]
-      },
-      {
-        "name": "Energy Data",
-        "item": [
-          {
-            "name": "Create Energy Data",
-            "request": {
-              "method": "POST",
-              "url": "http://localhost:3000/api/energydata",
-              "header": [
-                {
-                  "key": "Authorization",
-                  "value": "{{token}}"
-                }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"producer\": \"{{producerId}}\",\n  \"consumer\": \"{{consumerId}}\",\n  \"timestamp\": \"{{timestamp}}\",\n  \"quantity\": 150,\n  \"type\": \"Consumption\"\n}"
-              }
-            }
-          }
-        ]
-      }
-    ]
-  }
+        }
+      ]
+    }
+  ]
+}
