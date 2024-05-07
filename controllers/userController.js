@@ -86,6 +86,24 @@ const getWalletIDFromGoAPI = async (username, token) => {
   }
 };
 
+const getUserBalanceFromGoAPI = async (username, token) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:8082/balance",
+      { username },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.value;
+  } catch (error) {
+    console.error("Error getting wallet ID from Go API:", error);
+    throw error;
+  }
+};
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -131,13 +149,17 @@ const getUserData = async (req, res) => {
     // Get the user's wallet address from the Go API
     const walletAddress = await getWalletIDFromGoAPI(user.username, adminToken);
 
+    // Get the user's balance 
+    const userBalance = await getUserBalanceFromGoAPI(user.username, adminToken);
+
     // Prepare the user data response
     const userData = {
       _id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,
-      walletAddress,
+      userBalance: userBalance,
+      walletAddress: walletAddress,
     };
 
     res.json(userData);
