@@ -1,26 +1,22 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const transactionSchema = new mongoose.Schema({
-  consumer: {
+  payer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'EnergyConsumer',
+    ref: "User",
     required: true,
   },
-  producer: {
+  payee: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'EnergyProducer',
+    ref: "User",
     required: true,
   },
   energyRequest: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'EnergyRequest',
-    required: true,
+    ref: "EnergyRequest",
+    required: false,
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  price: {
+  amount: {
     type: Number,
     required: true,
   },
@@ -38,6 +34,6 @@ const transactionSchema = new mongoose.Schema({
   },
 });
 
-const Transaction = mongoose.model('Transaction', transactionSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
 module.exports = Transaction;
