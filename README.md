@@ -57,7 +57,7 @@ npm run dev
 
 ### API Documentation
 
-The API endpoints and their usage are documented in the [API Documentation](docs/api.md) file.
+The API endpoints and their usage are documented in the [API Documentation](howToTest.md) file.
 
 ### Testing
 
